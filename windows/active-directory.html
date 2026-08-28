@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>👤 Active Directory - IT Playbook</title><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'default',securityLevel:'loose'});</script><style>*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f5f6f8;color:#222;line-height:1.6}header{background:#1f2937;color:white;padding:22px 30px}.header-inner{max-width:1100px;margin:auto}header a{color:#cbd5e1;text-decoration:none;font-size:14px}header h1{margin:15px 0 5px;font-size:30px}header p{margin:0;color:#cbd5e1}.container{max-width:1100px;margin:30px auto;padding:0 20px}.card{background:white;padding:25px;margin-bottom:20px;border-radius:10px;border:1px solid #e5e7eb;box-shadow:0 2px 7px rgba(0,0,0,.06)}.card h2{margin-top:0;font-size:21px}.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}.card-link{display:block;background:white;padding:20px;border-radius:10px;text-decoration:none;color:#222;border:1px solid #e5e7eb;box-shadow:0 2px 7px rgba(0,0,0,.06);transition:.2s}.card-link:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,.1)}.card-link .icon{font-size:28px}.card-link h3{margin:0 0 6px;font-size:17px}.card-link p{margin:0;color:#6b7280;font-size:13px}.diagram{background:#fff;padding:10px;border-radius:8px;overflow-x:auto;text-align:center}pre{background:#111827;color:#e5e7eb;padding:20px;border-radius:8px;overflow-x:auto}code{font-family:Consolas,monospace}table{width:100%;border-collapse:collapse}th,td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left}th{background:#f8fafc}.memory{border-left:5px solid #1f2937}footer{text-align:center;padding:30px;color:#9ca3af;font-size:13px}@media(max-width:700px){header{padding:20px}header h1{font-size:25px}}</style></head><body><header><div class="header-inner"><a href="index.html">← Windows</a><h1>👤 Active Directory</h1><p>Domain, User, Computer, Group และ GPO</p></div></header><div class="container">
+<div class="card"><h2>🧠 AD คืออะไร?</h2><p>Active Directory ใช้จัดการ Identity, Computer, Group และ Policy ในองค์กร</p></div>
+<div class="card"><h2>🖼 AD Structure</h2><div class="diagram"><pre class="mermaid">flowchart TB
+D["Active Directory Domain"]-->OU1["OU: Users"]
+D-->OU2["OU: Computers"]
+D-->OU3["OU: Servers"]
+D-->G["Security Groups"]
+D-->GPO["Group Policy"]
+OU1-->U["User Accounts"]
+OU2-->PC["Computer Accounts"]</pre></div></div>
+<div class="card"><h2>🔎 Commands</h2><pre><code>whoami
+whoami /groups
+echo %LOGONSERVER%
+gpresult /r
+gpupdate /force
+nslookup domain.local
+ipconfig /flushdns
+ipconfig /registerdns</code></pre></div>
+<div class="card"><h2>📋 AD Troubleshooting</h2><table><tr><th>อาการ</th><th>จุดตรวจ</th></tr><tr><td>Login Domain ไม่ได้</td><td>Network, DNS, Time, Account, DC</td></tr><tr><td>GPO ไม่เข้า</td><td>OU, Security Filtering, gpresult</td></tr><tr><td>Join Domain ไม่ได้</td><td>DNS, Time Sync, Credentials, Connectivity</td></tr></table></div>
+<div class="card"><h2>🔧 Domain Join Flow</h2><div class="diagram"><pre class="mermaid">flowchart LR
+A["PC"]-->B["Correct IP / DNS"]-->C["Resolve Domain"]-->D["Join Domain"]-->E["Restart"]-->F["Login Domain"]-->G["GPO Apply"]</pre></div></div>
+<div class="card memory"><h2>🧠 Quick Memory</h2><p><b>Network → DNS → Time → Account → GPO</b></p></div>
+</div><footer>IT Playbook · Windows</footer></body></html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>🪟 Windows - IT Playbook</title><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'default',securityLevel:'loose'});</script><style>*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f5f6f8;color:#222;line-height:1.6}header{background:#1f2937;color:white;padding:22px 30px}.header-inner{max-width:1100px;margin:auto}header a{color:#cbd5e1;text-decoration:none;font-size:14px}header h1{margin:15px 0 5px;font-size:30px}header p{margin:0;color:#cbd5e1}.container{max-width:1100px;margin:30px auto;padding:0 20px}.card{background:white;padding:25px;margin-bottom:20px;border-radius:10px;border:1px solid #e5e7eb;box-shadow:0 2px 7px rgba(0,0,0,.06)}.card h2{margin-top:0;font-size:21px}.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}.card-link{display:block;background:white;padding:20px;border-radius:10px;text-decoration:none;color:#222;border:1px solid #e5e7eb;box-shadow:0 2px 7px rgba(0,0,0,.06);transition:.2s}.card-link:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,.1)}.card-link .icon{font-size:28px}.card-link h3{margin:0 0 6px;font-size:17px}.card-link p{margin:0;color:#6b7280;font-size:13px}.diagram{background:#fff;padding:10px;border-radius:8px;overflow-x:auto;text-align:center}pre{background:#111827;color:#e5e7eb;padding:20px;border-radius:8px;overflow-x:auto}code{font-family:Consolas,monospace}table{width:100%;border-collapse:collapse}th,td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left}th{background:#f8fafc}.memory{border-left:5px solid #1f2937}footer{text-align:center;padding:30px;color:#9ca3af;font-size:13px}@media(max-width:700px){header{padding:20px}header h1{font-size:25px}}</style></head><body><header><div class="header-inner"><a href="index.html">← Windows</a><h1>🪟 Windows</h1><p>Windows Administration & Troubleshooting</p></div></header><div class="container">
+<div class="card"><h2>🧠 Windows Troubleshooting</h2><p>เริ่มจากระบุอาการและขอบเขต ก่อนเปลี่ยนแปลงระบบ</p></div>
+<div class="card"><h2>🖼 Troubleshooting Flow</h2><div class="diagram"><pre class="mermaid">flowchart TD
+A["Windows Problem"]-->B{"กระทบ User เดียวหรือหลายคน?"}
+B-->|User เดียว|C["Profile / PC / Application"]
+B-->|หลายคน|D["Network / Server / Policy"]
+C-->E["Event Viewer / Services / Settings"]
+D-->F["AD / DNS / DHCP / Server"]
+E-->G["Fix + Verify"]
+F-->G</pre></div></div>
+<div class="card"><h2>🔎 Commands ที่ควรรู้</h2><pre><code>winver
+systeminfo
+hostname
+whoami
+ipconfig /all
+gpresult /r
+sfc /scannow
+DISM /Online /Cleanup-Image /RestoreHealth
+tasklist</code></pre></div>
+<div class="card"><h2>📋 Event Viewer</h2><table><tr><th>Log</th><th>ใช้ดูอะไร</th></tr><tr><td>System</td><td>Driver, Service, Shutdown, Hardware</td></tr><tr><td>Application</td><td>Application Error</td></tr><tr><td>Security</td><td>Logon และ Security Events</td></tr></table></div>
+<div class="card"><h2>🔧 Basic Checklist</h2><ol><li>Reproduce ปัญหา</li><li>ตรวจเวลาเกิดเหตุ</li><li>ดู Event Viewer</li><li>ตรวจ Network / DNS</li><li>ตรวจ Service</li><li>ตรวจ Update / Driver</li><li>แก้ไขและทดสอบซ้ำ</li><li>บันทึกวิธีแก้</li></ol></div>
+<div class="card memory"><h2>🧠 Quick Memory</h2><p><b>Don't guess → collect evidence first.</b></p></div>
+</div><footer>IT Playbook · Windows</footer></body></html>
