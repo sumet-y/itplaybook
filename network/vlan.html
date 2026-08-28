@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VLAN - IT Playbook</title>
+
+    <!-- Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose'
+        });
+    </script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f5f6f8;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* Header */
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 22px 30px;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        header a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        header a:hover {
+            color: white;
+        }
+
+        header h1 {
+            margin: 15px 0 5px;
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 0;
+            color: #cbd5e1;
+        }
+
+        /* Container */
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Card */
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 7px rgba(0,0,0,.06);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        /* Mermaid */
+
+        .diagram {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* Definition */
+
+        .definition {
+            font-size: 18px;
+            background: #f8fafc;
+            padding: 20px;
+            border-left: 5px solid #1f2937;
+            border-radius: 5px;
+        }
+
+        /* Comparison */
+
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .compare-box {
+            padding: 20px;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .compare-box h3 {
+            margin-top: 0;
+        }
+
+        /* Table */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+
+        /* Code */
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        /* Quick Memory */
+
+        .memory {
+            background: #fff;
+            border-left: 5px solid #1f2937;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .memory li {
+            margin-bottom: 8px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 700px) {
+
+            .compare {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ========================= -->
+<!-- HEADER -->
+<!-- ========================= -->
+
+<header>
+
+    <div class="header-inner">
+
+        <a href="index.html">
+            ← Network
+        </a>
+
+        <h1>🏷️ VLAN</h1>
+
+        <p>
+            Virtual Local Area Network
+        </p>
+
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- ========================= -->
+    <!-- CONCEPT -->
+    <!-- ========================= -->
+
+    <section class="card">
+
+        <h2>🧠 VLAN คืออะไร?</h2>
+
+        <div class="definition">
+
+            <strong>VLAN (Virtual Local Area Network)</strong>
+            คือการแบ่ง Network เดียวออกเป็นหลาย Logical Network
+            โดยไม่จำเป็นต้องแยก Switch ออกจากกัน
+
+        </div>
+
+        <p>
+            ตัวอย่างเช่น บริษัทมี Network เดียว แต่ต้องการแยก
+            Office, Production และ Guest ออกจากกัน
+        </p>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- DIAGRAM -->
+    <!-- ========================= -->
+
+    <section class="card">
+
+        <h2>🖼 VLAN Diagram</h2>
+
+        <div class="diagram">
+
+            <pre class="mermaid">
+flowchart TB
+
+    Router["🌐 Router / Firewall"]
+
+    Switch["🔀 Managed Switch"]
+
+    PC1["💻 Office PC"]
+    PC2["💻 Office PC"]
+
+    PC3["🖥 Production PC"]
+    PC4["🖥 Production PC"]
+
+    AP["📶 Access Point"]
+
+    Guest["📱 Guest Wi-Fi"]
+
+    Router --> Switch
+
+    Switch --> PC1
+    Switch --> PC2
+
+    Switch --> PC3
+    Switch --> PC4
+
+    Switch --> AP
+
+    AP --> Guest
+
+    subgraph VLAN10["VLAN 10 - OFFICE"]
+        PC1
+        PC2
+    end
+
+    subgraph VLAN20["VLAN 20 - PRODUCTION"]
+        PC3
+        PC4
+    end
+
+    subgraph VLAN30["VLAN 30 - GUEST"]
+        Guest
+    end
+            </pre>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- VLAN TABLE -->
+    <!-- ========================= -->
+
+    <section class="card">
+
+        <h2>📋 ตัวอย่าง VLAN</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>VLAN</th>
+                    <th>ชื่อ</th>
+                    <th>Network</th>
+                    <th>ตัวอย่างอุปกรณ์</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>10</td>
+                    <td>OFFICE</td>
+                    <td>192.168.10.0/24</td>
+                    <td>PC / Notebook</td>
+                </tr>
+
+                <tr>
+                    <td>20</td>
+                    <td>PRODUCTION</td>
+                    <td>192.168.20.0/24</td>
+                    <td>เครื่องจักร / PC</td>
+                </tr>
+
+                <tr>
+                    <td>30</td>
+                    <td>GUEST</td>
+                    <td>192.168.30.0/24</td>
+                    <td>Guest Wi-Fi</td>
+                </tr>
+
+                <tr>
+                    <td>40</td>
+                    <td>VOICE</td>
+                    <td>192.168.40.0/24</td>
+                    <td>IP Phone</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- ACCESS VS TRUNK -->
+    <!-- ========================= -->
+
+    <section class="card">
+
+        <h2>🔀 Access vs Trunk</h2>
+
+        <div class="compare">
+
+            <div class="compare-box">
+
+                <h3>🔵 Access Port</h3>
+
+                <p>
+                    ใช้เชื่อมต่อกับอุปกรณ์ปลายทาง
+                    ที่ต้องการ VLAN เดียว
+                </p>
+
+                <ul>
+                    <li>PC</li>
+                    <li>Printer</li>
+                    <li>กล้อง CCTV</li>
+                    <li>Server บางกรณี</li>
+                </ul>
+
+                <strong>
+                    1 Port → 1 VLAN
+                </strong>
+
+            </div>
+
+
+            <div class="compare-box">
+
+                <h3>🟣 Trunk Port</h3>
+
+                <p>
+                    ใช้ส่งข้อมูลหลาย VLAN ผ่าน Link เดียว
+                </p>
+
+                <ul>
+                    <li>Switch ↔ Switch</li>
+                    <li>Switch ↔ Router</li>
+                    <li>Switch ↔ Firewall</li>
+                    <li>Switch ↔ Access Point</li>
+                </ul>
+
+                <strong>
+                    1 Port → หลาย VLAN
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- CISCO -->
+    <!-- ========================= -->
+
+    <section class="card">
+
+        <h2>⚙ Cisco Example</h2>
+
+        <h3>สร้าง VLAN</h3>
+
+<pre><code>
+vlan 10
+ name OFFICE
+
+vlan 20
+ name PRODUCTION
+
+vlan 30
+ name GUEST
+</code></pre>
+
+
+        <h3>Access Port</h3>
+
+<pre><code>
+interface GigabitEthernet0/1
+
+ switchport mode access
+ switchport access vlan 10
+</code></pre>
+
+
+        <h3>Trunk Port</h3>
+
+<pre><code>
+interface GigabitEthernet0/24
+
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+</code></pre>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- ARUBA -->
+    <!-- ========================= -->
+
+    <section class="card">
+
+        <h2>🟣 Aruba / HPE Example</h2>
+
+        <h3>Untagged</h3>
+
+<pre><code>
+vlan 10
+   untagged 1-10
+</code></pre>
+
+
+        <h3>Tagged</h3>
+
+<pre><code>
+vlan 10
+   tagged 24
+
+vlan 20
+   tagged 24
+
+vlan 30
+   tagged 24
+</code></pre>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- TROUBLESHOOT -->
+    <!-- ========================= -->
+
+    <section class="card">
+
+        <h2>🔧 VLAN Troubleshooting</h2>
+
+        <div class="diagram">
+
+            <pre class="mermaid">
+flowchart TD
+
+    A["❌ อุปกรณ์ใช้งาน Network ไม่ได้"]
+
+    A --> B{"ได้รับ IP หรือไม่?"}
+
+    B -->|ไม่ได้| C["ตรวจ DHCP"]
+    B -->|ได้| D{"Ping Gateway ได้หรือไม่?"}
+
+    C --> E["ตรวจ VLAN / DHCP / Port"]
+
+    D -->|ไม่ได้| F["ตรวจ VLAN / Gateway / Trunk"]
+
+    D -->|ได้| G{"Ping Internet ได้หรือไม่?"}
+
+    G -->|ไม่ได้| H["ตรวจ Routing / Firewall / NAT"]
+
+    G -->|ได้| I["ตรวจ DNS / Application"]
+            </pre>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- QUICK MEMORY -->
+    <!-- ========================= -->
+
+    <section class="card">
+
+        <div class="memory">
+
+            <h2>🧠 Quick Memory</h2>
+
+            <ul>
+
+                <li>
+                    <strong>VLAN</strong> = แบ่ง Network ทาง Logical
+                </li>
+
+                <li>
+                    <strong>Access</strong> = ปกติใช้กับอุปกรณ์ปลายทาง / VLAN เดียว
+                </li>
+
+                <li>
+                    <strong>Trunk</strong> = ขนหลาย VLAN ผ่าน Link เดียว
+                </li>
+
+                <li>
+                    <strong>Tagged</strong> = Frame มี VLAN Tag
+                </li>
+
+                <li>
+                    <strong>Untagged</strong> = Frame ไม่มี VLAN Tag
+                </li>
+
+                <li>
+                    <strong>Gateway</strong> = ใช้สำหรับออกไปยัง Network อื่น
+                </li>
+
+            </ul>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<footer style="text-align:center; padding:30px; color:#9ca3af;">
+
+    IT Playbook · Network · VLAN
+
+</footer>
+
+
+</body>
+</html>
