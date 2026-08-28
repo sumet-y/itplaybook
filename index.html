@@ -1,32 +1,97 @@
-itplaybook/
-│
-├── index.html
-│
-├── network/
-│   ├── index.html
-│   ├── vlan.html
-│   ├── switch.html
-│   └── diagram.html
-│
-├── windows/
-│   ├── index.html
-│   ├── installation.html
-│   ├── sysprep.html
-│   └── active-directory.html
-│
-├── security/
-│   ├── index.html
-│   ├── cybersecurity.html
-│   └── incident-response.html
-│
-├── powerbi/
-│   ├── index.html
-│   └── dashboard.html
-│
-├── ai/
-│   ├── index.html
-│   └── ai-tools.html
-│
-└── backup/
-    ├── index.html
-    └── backup-guide.html
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Playbook</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f5f6f8;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>IT Playbook</h1>
+    <p>IT Support Knowledge Base</p>
+</header>
+
+<div class="container">
+
+    <h2>Categories</h2>
+
+    <div class="menu">
+
+        <a class="card" href="#">
+            <h3>🌐 Network</h3>
+            <p>VLAN, Switch, TCP/IP</p>
+        </a>
+
+        <a class="card" href="#">
+            <h3>🪟 Windows</h3>
+            <p>Windows, AD, Deployment</p>
+        </a>
+
+        <a class="card" href="#">
+            <h3>🔐 Security</h3>
+            <p>Cybersecurity & Security</p>
+        </a>
+
+        <a class="card" href="#">
+            <h3>📊 Power BI</h3>
+            <p>Dashboard & Data</p>
+        </a>
+
+        <a class="card" href="#">
+            <h3>🤖 AI Tools</h3>
+            <p>AI Tools & Workflows</p>
+        </a>
+
+        <a class="card" href="#">
+            <h3>🚨 Incident Response</h3>
+            <p>IT Incident & Recovery</p>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
