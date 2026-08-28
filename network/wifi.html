@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wi-Fi Fundamentals - IT Playbook</title>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true, theme:'default', securityLevel:'loose'});
+</script>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background:#f5f6f8;color:#222;line-height:1.6}
+header{background:#1f2937;color:white;padding:22px 30px}
+.header-inner{max-width:1100px;margin:auto}
+header a{color:#cbd5e1;text-decoration:none;font-size:14px}
+header a:hover{color:white}
+header h1{margin:15px 0 5px;font-size:30px}
+header p{margin:0;color:#cbd5e1}
+.container{max-width:1100px;margin:30px auto;padding:0 20px}
+.card{background:white;padding:25px;margin-bottom:20px;border-radius:10px;border:1px solid #e5e7eb;box-shadow:0 2px 7px rgba(0,0,0,.06)}
+.card h2{margin-top:0;font-size:21px}
+.diagram{background:#fff;padding:10px;border-radius:8px;overflow-x:auto;text-align:center}
+pre{background:#111827;color:#e5e7eb;padding:20px;border-radius:8px;overflow-x:auto}
+code{font-family:Consolas,monospace}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left}
+th{background:#f8fafc}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.box{background:#f8fafc;padding:20px;border-radius:8px}
+.memory{border-left:5px solid #1f2937}
+footer{text-align:center;padding:30px;color:#9ca3af;font-size:13px}
+@media(max-width:700px){.compare{grid-template-columns:1fr}header{padding:20px}header h1{font-size:25px}}
+</style>
+</head>
+<body>
+<header><div class="header-inner">
+<a href="index.html">← Network</a>
+<h1>Wi-Fi Fundamentals</h1>
+<p>SSID, Channel, Band และสัญญาณ</p>
+</div></header>
+<div class="container">
+
+<div class="card"><h2>🧠 Wi-Fi ต้องดูอะไร?</h2><p>SSID, Band, Channel, Channel Width, RSSI, SNR, Client Load และ Roaming</p></div>
+<div class="card"><h2>🖼 Wi-Fi Architecture</h2><div class="diagram"><pre class="mermaid">
+flowchart LR
+Client["Laptop / Handheld"]-->AP["Access Point"]
+AP-->SW["PoE Switch"]
+SW-->CTRL["Controller / Cloud"]
+CTRL-->FW["Firewall"]
+FW-->NET["Network / Internet"]
+</pre></div></div>
+<div class="card"><h2>📋 ตัวชี้วัด</h2><table><tr><th>ค่า</th><th>ความหมาย</th></tr><tr><td>RSSI</td><td>ระดับสัญญาณที่รับได้</td></tr><tr><td>SNR</td><td>Signal เทียบ Noise</td></tr><tr><td>Channel</td><td>ช่องความถี่</td></tr><tr><td>Channel Width</td><td>ความกว้างช่อง</td></tr><tr><td>Roaming</td><td>Client ย้าย AP</td></tr></table></div>
+<div class="card memory"><h2>🧠 Quick Memory</h2><p>Wi-Fi ช้าไม่ใช่แค่ Signal อ่อน ต้องดู <b>Channel / Interference / Client Load / SNR / Roaming</b> ด้วย</p></div>
+</div>
+<footer>IT Playbook · Network</footer>
+</body>
+</html>

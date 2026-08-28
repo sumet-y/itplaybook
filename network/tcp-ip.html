@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCP/IP - IT Playbook</title>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true, theme:'default', securityLevel:'loose'});
+</script>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background:#f5f6f8;color:#222;line-height:1.6}
+header{background:#1f2937;color:white;padding:22px 30px}
+.header-inner{max-width:1100px;margin:auto}
+header a{color:#cbd5e1;text-decoration:none;font-size:14px}
+header a:hover{color:white}
+header h1{margin:15px 0 5px;font-size:30px}
+header p{margin:0;color:#cbd5e1}
+.container{max-width:1100px;margin:30px auto;padding:0 20px}
+.card{background:white;padding:25px;margin-bottom:20px;border-radius:10px;border:1px solid #e5e7eb;box-shadow:0 2px 7px rgba(0,0,0,.06)}
+.card h2{margin-top:0;font-size:21px}
+.diagram{background:#fff;padding:10px;border-radius:8px;overflow-x:auto;text-align:center}
+pre{background:#111827;color:#e5e7eb;padding:20px;border-radius:8px;overflow-x:auto}
+code{font-family:Consolas,monospace}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left}
+th{background:#f8fafc}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.box{background:#f8fafc;padding:20px;border-radius:8px}
+.memory{border-left:5px solid #1f2937}
+footer{text-align:center;padding:30px;color:#9ca3af;font-size:13px}
+@media(max-width:700px){.compare{grid-template-columns:1fr}header{padding:20px}header h1{font-size:25px}}
+</style>
+</head>
+<body>
+<header><div class="header-inner">
+<a href="index.html">← Network</a>
+<h1>TCP/IP</h1>
+<p>Protocol, Port และการสื่อสารระหว่างเครื่อง</p>
+</div></header>
+<div class="container">
+
+<div class="card"><h2>🧠 TCP/IP คืออะไร?</h2><p>ชุด Protocol หลักของ Internet และ Network โดย TCP/IP Model แบ่งหน้าที่เป็น Application, Transport, Internet และ Network Access</p></div>
+<div class="card"><h2>🖼 TCP/IP Flow</h2><div class="diagram"><pre class="mermaid">
+flowchart LR
+A["Application<br>HTTP / DNS / DHCP"]-->B["Transport<br>TCP / UDP"]-->C["Internet<br>IP / ICMP"]-->D["Network Access<br>Ethernet / Wi-Fi"]
+</pre></div></div>
+<div class="card"><h2>📋 Protocol ที่ควรรู้</h2><table><tr><th>Protocol</th><th>หน้าที่</th><th>Port</th></tr>
+<tr><td>HTTP</td><td>Web</td><td>80</td></tr><tr><td>HTTPS</td><td>Secure Web</td><td>443</td></tr>
+<tr><td>DNS</td><td>Name Resolution</td><td>53</td></tr><tr><td>DHCP</td><td>แจก IP</td><td>67/68</td></tr>
+<tr><td>SSH</td><td>Remote CLI</td><td>22</td></tr><tr><td>RDP</td><td>Remote Desktop</td><td>3389</td></tr>
+<tr><td>SMB</td><td>File Sharing</td><td>445</td></tr></table></div>
+<div class="card"><h2>🧠 TCP vs UDP</h2><div class="compare"><div class="box"><h3>TCP</h3><p>มี Connection, Reliable, ตรวจสอบการส่งข้อมูล เหมาะกับ Web/SSH/SMB</p></div><div class="box"><h3>UDP</h3><p>ไม่สร้าง Connection, Overhead ต่ำ เหมาะกับ DNS, Voice และงานที่ต้องการความเร็ว</p></div></div></div>
+<div class="card memory"><h2>🧠 Quick Memory</h2><p><b>IP</b> = ไปเครื่องไหน · <b>Port</b> = ไปบริการอะไร · <b>TCP</b> = เน้นความถูกต้อง · <b>UDP</b> = เน้นความเร็ว</p></div>
+</div>
+<footer>IT Playbook · Network</footer>
+</body>
+</html>
