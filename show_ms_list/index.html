@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharePoint List Dashboard</title>
+    <!-- นำเข้าไลบรารี MSAL.js สำหรับจัดการระบบ Login ของ Microsoft -->
+    <script src="https://alcdn.msauth.net/browser/2.37.0/js/msal-browser.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f3f2f1; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 800px; margin: auto; }
+        button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px; }
+        #loginBtn { background-color: #0078d4; color: white; }
+        #logoutBtn { background-color: #d13438; color: white; display: none; }
+        #dashboard { display: none; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background-color: #f8f8f8; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>ระบบดึงข้อมูล Microsoft Lists</h2>
+        
+        <!-- ส่วนควบคุมการล็อกอิน -->
+        <div id="auth-section">
+            <button id="loginBtn" onclick="signIn()">เข้าสู่ระบบด้วย Microsoft 365</button>
+            <button id="logoutBtn" onclick="signOut()">ออกจากระบบ</button>
+            <span id="userName"></span>
+        </div>
+
+        <!-- ส่วนแสดงข้อมูล (จะซ่อนไว้จนกว่าจะล็อกอินสำเร็จ) -->
+        <div id="dashboard">
+            <h3>ข้อมูลจาก Lists</h3>
+            <div id="dataContainer">กำลังโหลดข้อมูล...</div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. ตั้งค่า MSAL Configuration (ต้องแก้ค่าตรงนี้)
+        // ==========================================
+        const msalConfig = {
+            auth: {
+                clientId: "ใส่_CLIENT_ID_ของคุณที่นี่", // ได้จาก Azure AD (Entra ID)
+                authority: "https://login.microsoftonline.com/ใส่_TENANT_ID_ของคุณที่นี่", 
+                redirectUri: "http://localhost:5500" // หรือ URL ของ GitHub Pages เมื่อโฮสต์จริง
+            }
+        };
+
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+        // กำหนดสิทธิ์ที่แอปต้องการขอ (อ่านข้อมูล Sites/Lists)
+        const loginRequest = {
+            scopes: ["User.Read", "Sites.Read.All"]
+        };
+
+        // ==========================================
+        // 2. ฟังก์ชันเข้าสู่ระบบ (Login)
+        // ==========================================
+        async function signIn() {
+            try {
+                await msalInstance.initialize(); // จำเป็นสำหรับ MSAL v2+
+                const loginResponse = await msalInstance.loginPopup(loginRequest);
+                
+                // อัปเดตหน้าจอเมื่อล็อกอินผ่าน
+                document.getElementById("userName").innerText = "ผู้ใช้งาน: " + loginResponse.account.name;
+                document.getElementById("loginBtn").style.display = "none";
+                document.getElementById("logoutBtn").style.display = "inline-block";
+                document.getElementById("dashboard").style.display = "block";
+
+                // เริ่มดึงข้อมูลทันที
+                fetchListData(loginResponse.account);
+            } catch (error) {
+                console.error("Login failed:", error);
+                alert("เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบ Console");
+            }
+        }
+
+        // ==========================================
+        // 3. ฟังก์ชันดึงข้อมูลจาก Microsoft Graph API
+        // ==========================================
+        async function fetchListData(account) {
+            try {
+                // ขอ Access Token แบบเงียบๆ (ไม่ขึ้นป๊อปอัปซ้ำ)
+                const tokenResponse = await msalInstance.acquireTokenSilent({
+                    ...loginRequest,
+                    account: account
+                });
+
+                // Endpoint ของ Graph API สำหรับดึงข้อมูล List
+                // ต้องเปลี่ยน Site ID และ List ID ของคุณเอง
+                const siteId = "ใส่_SITE_ID"; 
+                const listId = "ใส่_LIST_ID";
+                const graphUrl = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?expand=fields`;
+
+                const response = await fetch(graphUrl, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${tokenResponse.accessToken}`,
+                        "Accept": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    renderData(data.value);
+                } else {
+                    document.getElementById("dataContainer").innerText = "เกิดข้อผิดพลาดในการดึงข้อมูล: " + response.statusText;
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        }
+
+        // ==========================================
+        // 4. ฟังก์ชันนำข้อมูลมาวาดลงตาราง HTML
+        // ==========================================
+        function renderData(items) {
+            const container = document.getElementById("dataContainer");
+            
+            if (!items || items.length === 0) {
+                container.innerHTML = "<p>ไม่พบข้อมูลในระบบ</p>";
+                return;
+            }
+
+            let html = `<table>
+                            <tr>
+                                <th>ID</th>
+                                <th>หัวข้อ (Title)</th>
+                            </tr>`;
+
+            // วนลูปอ่านค่า fields ของแต่ละแถว (ปรับชื่อคอลัมน์ Title ตามฐานข้อมูลจริง)
+            items.forEach(item => {
+                const fields = item.fields;
+                html += `<tr>
+                            <td>${fields.id || item.id}</td>
+                            <td>${fields.Title || "ไม่มีชื่อ"}</td>
+                         </tr>`;
+            });
+
+            html += `</table>`;
+            container.innerHTML = html;
+        }
+
+        // ==========================================
+        // 5. ฟังก์ชันออกจากระบบ
+        // ==========================================
+        function signOut() {
+            const logoutRequest = {
+                account: msalInstance.getAllAccounts()[0]
+            };
+            msalInstance.logoutPopup(logoutRequest).then(() => {
+                window.location.reload();
+            });
+        }
+    </script>
+</body>
+</html>
